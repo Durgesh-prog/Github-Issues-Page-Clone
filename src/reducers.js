@@ -1,6 +1,7 @@
 import { combineReducers, } from 'redux';
 import {  useSelector } from 'react-redux';
 import appReducer, { State as AppState } from '@ui/app/reducer';
+import { repoStatsReducer,issuesReducer } from '@ui/repo/reducer';
 
 /* import authReducer, { State as AuthState } from '@ui/auth/reducer';
 import blogListReducer, { State as BlogListState } from '@ui/bloglist/reducer';
@@ -24,7 +25,9 @@ import editorBlogsReducer, { State as EditorBlogState } from '@ui/editor/blogs/r
 export const useStateSelector = useSelector;
 
 const rootReducer = combineReducers({
-	appState:appReducer
+	appState:appReducer,
+	repoStats:repoStatsReducer,
+	issueState:issuesReducer
 });
 
 /*  appState: appReducer,

@@ -1,7 +1,18 @@
-import { actionCreator } from '@utils/creator';
+//Action Types
+export const CLEAR_PAGE_TITLE = 'CLEAR_PAGE_TITLE';
+export const SET_PAGE_TITLE = 'SET_PAGE_TITLE';
 
-export const clearPageTitle = actionCreator('CLEAR_PAGE_TITLE');
+//Action Creators
+export const clearPageTitle = (data) => { 
+		return {
+			type:CLEAR_PAGE_TITLE,
+			payload:{}
+	}
+}
 
-export const setPageTitle = actionCreator('SET_PAGE_TITLE');
-
-clearPageTitle.action();
+export const setPageTitle = (data) => { 
+		return {
+			type:SET_PAGE_TITLE,
+			payload:data
+	}
+}

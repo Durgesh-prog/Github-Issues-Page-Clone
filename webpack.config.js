@@ -3,10 +3,18 @@ const webpack = require('webpack');
 
 const dotenv = require('dotenv');
 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 //Is Application In Development MOde
 const isEnvDevelopment = process.env.NODE_ENV === 'development';
+
+const extractStyle = new MiniCssExtractPlugin({
+  filename: isEnvDevelopment ? 'style/[name].css' : 'style/[name].[hash].css',
+  chunkFilename: isEnvDevelopment ? 'style/[name].css' : 'style/[name].[hash].css',
+});
+
 
 const srcPath = path.resolve(__dirname, './src');
 const distPath = path.resolve(__dirname, './dist');
@@ -26,6 +34,7 @@ module.exports = {
     publicPath: '/',
   },
   plugins: [
+	extractStyle,
   ].concat(
     isEnvDevelopment
       ? [new webpack.HotModuleReplacementPlugin()]
@@ -54,9 +63,7 @@ module.exports = {
       },
       {
         test: /\.(css)$/,
-        use: [
-			{loader:'css-loader'}
-		],
+        use: [MiniCssExtractPlugin.loader,{ loader: 'css-loader' }],
       },
       {
         test: /\.(svg|png|jpg|jpeg|gif)$/,

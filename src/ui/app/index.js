@@ -5,8 +5,10 @@ import { useRouteMatch } from "react-router-dom";
 import {removeAppLoader,setPageTitle,scrollPageToTop} from '@utils/pageUtils';
 import { useDispatch } from 'react-redux';
 
-//import Header from '@ui/header';
-//import Footer from '@ui/footer';
+import useStyles from './styles';
+import { CssBaseline } from '@material-ui/core';
+
+import Header from '@ui/header';
 
 import { useStateSelector } from '@core/reducers';
 import { useSelector } from 'react-redux';
@@ -15,6 +17,8 @@ function App() {
  
   const dispatch = useDispatch();
   const match = useRouteMatch();
+ 
+   const classes = useStyles();
  
   const { currentPageTitle } = useSelector(({ appState }) => appState);
   
@@ -33,8 +37,10 @@ function App() {
 
   return (
     <Fragment>
-      <div >  
-        <div >
+      <CssBaseline />
+      <div className={classes.root}>
+		<Header />
+        <div className={classes.content}>
           <Routes />
         </div>
       </div>

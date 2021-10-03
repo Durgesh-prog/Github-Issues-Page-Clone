@@ -3,11 +3,12 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
 import { minify as minifyHtml } from 'html-minifier';
 
 import render from './template';
 import configureStore from './devStoreConfig';
-/* import theme from '@core/theme'; */
+import theme from '@core/theme';
 import rootReducer, { RootState } from '@core/reducers';
 import App from '@ui/app';
 
@@ -35,9 +36,13 @@ export default function pageBuilder(
   },
   currentState = {},
 ) {
-    currentState.appState = {
-      currentPageTitle:'Github'
-    };
+
+  // create  server styles
+  const sheets = new ServerStyleSheets();
+  
+  currentState.appState = {
+      currentPageTitle:'Github Issue'
+  };
 
   const store = isDev
     ? configureStore(currentState)
@@ -45,13 +50,19 @@ export default function pageBuilder(
 
   // Render the component to a string
   const html = renderToString(
+     sheets.collect(
       <Provider store={store}>
           <StaticRouter location={req.url} context={{}}>
-              <App />
+			 <ThemeProvider theme={theme}>
+               <App />
+			 </ThemeProvider>
           </StaticRouter>
       </Provider>,
+	 )
   );
 
+  // Grab the CSS from our sheets.
+  const css = sheets.toString();
 
   const baseUrl = `${getProtocol(req)}://${req.get('host')}`;
   const siteUrl = baseUrl + req.originalUrl;
@@ -60,10 +71,11 @@ export default function pageBuilder(
 
   let htmlPage = render({
     html: html,
+	css: css,
     preloadedState: store.getState(),
     siteUrl: siteUrl,
     title: title,
-    coverImg: coverImg ? coverImg : `${baseUrl}/assets/og-cover-image.jpg`,
+	coverImg: coverImg ? coverImg : `${baseUrl}/favicon.png`,
     description: description,
   });
 

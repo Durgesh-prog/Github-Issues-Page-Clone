@@ -7,7 +7,8 @@ import { Route, BrowserRouter } from 'react-router-dom';
 import rootReducer from '@core/reducers';
 import App from '@ui/app';
 import { logger } from '@utils/reduxMiddlewares';
-
+import createSagaMiddleware from 'redux-saga'
+import mySaga from './sagas'
 
 // Grab the state from a global variable injected into the server-generated HTML
 const preloadedState = window.__PRELOADED_STATE__;
@@ -15,12 +16,18 @@ const preloadedState = window.__PRELOADED_STATE__;
 // Allow the passed state to be garbage-collected
 delete window.__PRELOADED_STATE__;
 
+// Saga middleware
+const sagaMiddleware = createSagaMiddleware()
+
+
 // Create Redux store with initial state
 const store = createStore(
 	rootReducer,
     preloadedState,
-    composeWithDevTools(applyMiddleware(logger)),
+    composeWithDevTools(applyMiddleware(logger,sagaMiddleware)),
 );
+
+sagaMiddleware.run(mySaga)
 
 const Routes = () => {
 

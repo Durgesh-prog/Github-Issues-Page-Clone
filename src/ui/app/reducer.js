@@ -1,20 +1,17 @@
-import { clearPageTitle, setPageTitle } from './actions';
-
-const PAGE_DEFAULT_TITLE = 'AfterAcademy | OpenSource Project';
-
+import { CLEAR_PAGE_TITLE, SET_PAGE_TITLE } from './actions';
 
 export const defaultState = {
-  currentPageTitle: 'Hi',
+  currentPageTitle: 'Github',
 };
 
 const reducer = (state = defaultState, { type, payload } ) => {
   switch (type) {
-    case clearPageTitle.type:
+    case CLEAR_PAGE_TITLE:
       return { ...defaultState };
-    case setPageTitle.type:
+    case SET_PAGE_TITLE:
       return {
         ...state,
-        currentPageTitle: typeof payload === 'string' ? payload : PAGE_DEFAULT_TITLE,
+        currentPageTitle: typeof payload === 'string' ? payload : defaultState.currentPageTitle,
       };
     default:
       return state;
